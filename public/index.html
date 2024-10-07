@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aplicación Simple</title>
+</head>
+<body>
+  <h1>Ingresar Datos</h1>
+  <form action="/guardar" method="POST">
+    <label for="campo1">Campo 1:</label>
+    <input type="text" id="campo1" name="campo1" required><br><br>
+    <label for="campo2">Campo 2:</label>
+    <input type="text" id="campo2" name="campo2" required><br><br>
+    <label for="campo3">Campo 3:</label>
+    <input type="text" id="campo3" name="campo3" required><br><br>
+    <button type="submit">Guardar</button>
+  </form>
+
+  <h2>Datos Guardados</h2>
+  <ul id="lista-datos"></ul>
+
+  <script>
+    // Función para obtener y mostrar los datos
+    async function obtenerDatos() {
+      try {
+        const respuesta = await fetch('/obtener-datos');
+        const datos = await respuesta.json();
+        const lista = document.getElementById('lista-datos');
+        lista.innerHTML = '';
+        datos.forEach(dato => {
+          const item = document.createElement('li');
+          item.textContent = `${dato.campo1} - ${dato.campo2} - ${dato.campo3}`;
+          lista.appendChild(item);
+        });
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+      }
+    }
+
+    // Obtener los datos al cargar la página
+    window.onload = obtenerDatos;
+  </script>
+</body>
+</html>
